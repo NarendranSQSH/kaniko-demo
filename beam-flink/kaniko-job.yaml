@@ -1,0 +1,38 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kaniko-build-flink
+  namespace: flink
+spec:
+  backoffLimit: 1
+  template:
+    spec:
+      containers:
+      - name: kaniko
+        image: gcr.io/kaniko-project/executor:latest
+        args:
+        - --dockerfile=/Dockerfile
+        - --context=git://github.com/NarendranSQSH/kaniko-demo.git
+        - --destination=us-west1-docker.pkg.dev/vanshikatesting/kaniko-repo/app:v1
+        - --cache=true
+        - --cache-repo=us-west1-docker.pkg.dev/vanshikatesting/kaniko-repo/cache-img
+        - --cache-copy-layers=true
+        - --cache-run-layers=true
+        volumeMounts:
+        - name: kaniko-secret
+          mountPath: /secret
+        resources:  # Add this section
+          requests:
+            cpu: "500m"
+            memory: "512Mi"
+          limits:
+            cpu: "1"
+            memory: "1Gi"
+        env:
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: /secret/vanshikatesting-8e19d7df0d18.json
+      restartPolicy: Never
+      volumes:
+      - name: kaniko-secret
+        secret:
+          secretName: kaniko-secret
