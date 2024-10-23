@@ -13,11 +13,11 @@ spec:
         args:
         - --dockerfile=/beam-flink/Dockerfile
         - --context=git://github.com/NarendranSQSH/kaniko-demo.git
-        - --destination=us-west1-docker.pkg.dev/vanshikatesting/kaniko-repo/app:v1
+        - --destination=us-west1-docker.pkg.dev/vanshikatesting/kaniko-repo/application:v1
         - --cache=true
-        - --cache-repo=us-west1-docker.pkg.dev/vanshikatesting/kaniko-repo/cache-img
-        - --cache-copy-layers=true
-        - --cache-run-layers=true
+        - --cache-repo=us-west1-docker.pkg.dev/vanshikatesting/kaniko-repo/img-cache
+        #- --cache-copy-layers=true
+        #- --cache-run-layers=true
         volumeMounts:
         - name: kaniko-secret
           mountPath: /secret
