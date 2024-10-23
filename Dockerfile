@@ -7,7 +7,7 @@ WORKDIR /usr/src/app
 # Copy package.json and install dependencies
 COPY package.json ./
 RUN npm install --only=production
-
+RUN npm install @inspector-apm/inspector-nodejs --save
 # Copy the app source code
 COPY . .
 
